@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" href="etapes.css"/>
+	<script src="etapes.js"></script>
+	<title>Étapes</title>
+</head>
+<body>
+	<div class="interface">
+		<header>
+		<h1>Un site Web avec Laravel</h1>
+		<h2>Les étapes</h2>
+		</header>
+		<nav></nav>
+		<footer>Les vidéos sont disponibles sur <a href="https://www.youtube.com/channel/UCFWzWuHnqYOlBN2lJhBIGNg">la chaîne Youtube</a></footer>
+<div class="body">
+<ol>
+<li value="37" id="regles" data-video="">
+	<h2>Capter les erreurs : les règles</h2>
+	<ol>
+		<li>Voir la section <a href="https://learninglaravel.net/cheatsheet/#validation" target="_blank">validation du cheatsheet</a>.</li>
+		<li>Constater la panoplie de règles possibles.</li>
+        <li>Ouvrir le model <cite class="model">User</cite>.</li>
+        <li>Ajouter une propriété statique et publique <code class="php">$regles</code> qui est un array.</li>
+		<li>Ajouter la règle "required" pour le champ "prenom" de la table, la règle "email" pour le champ "email" et une expression régulière pour le code postal.
+			<div class="bloccode php copiable">
+				<div>static public $regles = [</div>
+				<div>   'prenom' => 'required',</div>
+				<div>   'email' => 'email',</div>
+				<div>   'codepostal' => 'required|regex:/^[a-z][0-9][a-z][.-]?[0-9][a-z][0-9]$/i',</div>
+				<div>];</div>
+			</div>
+        </li>
+	</ol>
+<li id="empecher_traitement" data-video="">
+    <h2>Empêcher le traitement du formulaire</h2>
+    <ol>
+        <li>Ouvrir le controller <span class="controller">UserController</span> et voir l'action <span class="controller">store</span>.</li>
+		<li>Ajouter la validation du request : 
+			<div class="bloccode php copiable">
+                <div>$request->validate(User::$regles);</div>
+                <div><samp>$donnees = $request->all()</samp></div>
+			</div>
+        </li>
+        <li>Tester avec des erreurs. MAGIE! Il fait automatiquement une redirection et remplit les champs.</li>
+        <li>Tester sans les erreurs. Il exécute l'ajout.</li>
+        <li>Faire de même pour la méthode <span class="controller">update</span>.</li>
+	</ol>
+</li>
+<li id="variable_error" data-video="">
+	<h2>La variable $errors</h2>
+	<ol>
+		<li>Dans la view <span class="blade">users.form</span>, faire afficher la variable $errors. <code class="blade copiable">{{$errors}}</code>.</li>
+        <li>Tester avec des erreurs.</li>    
+        <li>Faire un message d'erreur global.
+			<div class="bloccode blade copiable">
+                <div>@if($errors->any())</div>
+                <div>   &lt;div style="color:red; font-weight:bold; font-size:larger;"&gt;</div>
+				<div>      Veuillez corriger les erreurs du formulaire</div>
+				<div>   &lt;/div&gt;</div>
+				<div>@endif</div>
+			</div>
+		</li>
+		<li>Retester</li>
+	</ol>
+</li>
+<li id="chaque_erreur" data-video="">
+    <h2>Chaque erreur</h2>
+    <ol>
+        <li>Dans la view <span class="blade">users.form</span>, ajouter le code d'affichage d'erreur pour chaque champ.
+            <div class="bloccode blade copiable">
+                <div>@error('prenom')</div>
+                <div>   &lt;span style="color:red;"&gt;</div>
+                <div>      {{$errors->first('prenom')}}</div>
+                <div>   &lt;/span&gt;</div>
+                <div>@enderror</div>
+            </div>
+        </li>
+        <li>Retester</li>
+        <li>Compléter les règles
+			<div class="bloccode php copiable">
+				<div>static protected $regles = [</div>
+				<div>   'nom' => 'required',</div>
+				<div>   'prenom' => 'required',</div>
+				<div>   'name' => 'required|unique',</div>
+				<div>   'password' => 'required',</div>
+				<div>   'email' => 'required|email',</div>
+				<div>   'tel' => 'required|regex:/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/',</div>
+				<div>   'adresse' => 'required',</div>
+				<div>   'ville' => 'required',</div>
+				<div>   'province' => 'required',</div>
+				<div>   'codepostal' => 'required|regex:/^[a-z][0-9][a-z][.-]?[0-9][a-z][0-9]$/i',</div>
+				<div>   'citation' => '',</div>
+				<div>];</div>
+			</div>
+        </li>  
+    </ol>
+
+</li>
+<li id="messages_francais" data-video="">
+    <h2>Des messages en français</h2>
+    <ol>
+        <li>Dans le fichier <code class="fichier">/config/app.php</code>, changer la langue pour <code>fr</code> : <code class="php">'locale' => 'fr',</code>
+        </li>
+		<li>Dans Google, faire la recherche "<em>Laravel language pack</em>" et suivre les instructions.
+			<ol style="list-style-type: lower-roman; font-size: smaller;">
+				<li>Dans un terminal, exécuter la commande <code class="commande copiable">composer require caouecs/laravel-lang:~6.0</code></li>
+				<li>Copier ou déplacer le dossier <code class="fichier">/vendor/caouecs/laravel-lang/src/fr</code> vers le dossier <code class="fichier">/resources/lang</code> afin d'obtenir le dossier <code class="fichier">/resources/lang/fr</code></li>
+			</ol>
+		</li>
+    </ol>
+</li>
+</ol>
+</div>
+	</div>
+</body>
+</html>
